@@ -10,7 +10,7 @@ import Alertas     from './pages/Alertas'
 import Siembra     from './pages/Siembra'
 
 export default function App() {
-  const [page, setPage] = useState('dashboard')
+  const [page, setPage] = useState('cultivos')
   const [cultivoId, setCultivoId] = useState(null)
 
   const renderPage = () => {
