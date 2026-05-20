@@ -20,7 +20,11 @@ export default function Usuarios() {
         'http://localhost:3000/api/usuarios'
       )
 
-      setUsuarios(res.data)
+      setUsuarios(
+        Array.isArray(res.data)
+          ? res.data
+          : []
+        )
     } catch (error) {
       console.log(error)
       alert(
