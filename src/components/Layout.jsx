@@ -7,199 +7,203 @@ const NAV = [
   { id: 'ia', label: 'Análisis IA', icon: '🤖' },
   { id: 'alertas', label: 'Alertas', icon: '🚨' },
   { id: 'siembra', label: 'Siembra', icon: '📅' },
+  { id: 'usuarios', label: 'Usuarios', icon: '👤' },
 ]
 
-export default function Layout({ page, setPage, children }) {
-  const [collapsed, setCollapsed] = useState(false)
+export default function Layout({
+  page,
+  setPage,
+  children,
+}) {
+  const [collapsed, setCollapsed] =
+    useState(false)
+
+  const cerrarSesion = () => {
+    localStorage.removeItem('token')
+
+    localStorage.removeItem('usuario')
+
+    window.location.replace('/')
+  }
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
-      {/* Sidebar */}
+    <div
+      style={{
+        display: 'flex',
+        minHeight: '100vh',
+      }}
+    >
+      {/* SIDEBAR */}
       <aside
         style={{
-          width: collapsed ? 60 : 220,
-          background: 'var(--gris-6)',
+          width: collapsed ? 70 : 240,
+          background: '#111827',
+          color: '#fff',
           display: 'flex',
           flexDirection: 'column',
-          transition: 'width 0.2s',
-          flexShrink: 0,
-          position: 'sticky',
-          top: 0,
-          height: '100vh',
+          transition: '0.2s',
         }}
       >
-        {/* Logo */}
+        {/* LOGO */}
         <div
           style={{
-            padding: collapsed ? '20px 0' : '24px 20px',
-            borderBottom: '1px solid rgba(255,255,255,0.08)',
+            padding: 20,
+            borderBottom:
+              '1px solid rgba(255,255,255,0.1)',
           }}
         >
-          {collapsed ? (
-            <div style={{ textAlign: 'center', fontSize: 22 }}>
-              🌽
-            </div>
-          ) : (
-            <>
-              <div
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 20,
-                  color: '#fff',
-                  fontWeight: 600,
-                }}
-              >
-                MaízIA
-              </div>
+          <h1
+            style={{
+              fontSize: 24,
+              margin: 0,
+            }}
+          >
+            🌽 {!collapsed && 'MaízIA'}
+          </h1>
 
-              <div
-                style={{
-                  fontSize: 11,
-                  color: 'rgba(255,255,255,0.4)',
-                  marginTop: 2,
-                }}
-              >
-                Sistema de monitoreo
-              </div>
-            </>
+          {!collapsed && (
+            <p
+              style={{
+                fontSize: 12,
+                opacity: 0.7,
+                marginTop: 4,
+              }}
+            >
+              Sistema agrícola inteligente
+            </p>
           )}
         </div>
 
-        {/* Navegación */}
+        {/* MENU */}
         <nav
           style={{
             flex: 1,
-            padding: '12px 8px',
+            padding: 10,
           }}
         >
-          {NAV.map((n) => (
+          {NAV.map((item) => (
             <button
-              key={n.id}
-              onClick={() => setPage(n.id)}
+              key={item.id}
+              onClick={() =>
+                setPage(item.id)
+              }
               style={{
                 width: '100%',
                 display: 'flex',
                 alignItems: 'center',
                 gap: 10,
-                padding: collapsed ? '10px 0' : '10px 12px',
-                justifyContent: collapsed
-                  ? 'center'
-                  : 'flex-start',
-                borderRadius: 8,
-                background:
-                  page === n.id
-                    ? 'rgba(255,255,255,0.1)'
-                    : 'transparent',
-                color:
-                  page === n.id
-                    ? '#fff'
-                    : 'rgba(255,255,255,0.5)',
-                fontSize: 13,
-                marginBottom: 2,
+                padding: 14,
+                marginBottom: 8,
                 border: 'none',
+                borderRadius: 12,
                 cursor: 'pointer',
-                transition: 'all 0.15s',
-                borderLeft:
-                  page === n.id
-                    ? '3px solid var(--verde-md)'
-                    : '3px solid transparent',
+                background:
+                  page === item.id
+                    ? '#16a34a'
+                    : 'transparent',
+                color: '#fff',
+                fontSize: 15,
+                textAlign: 'left',
               }}
             >
-              <span style={{ fontSize: 16 }}>
-                {n.icon}
-              </span>
+              <span>{item.icon}</span>
 
-              {!collapsed && <span>{n.label}</span>}
+              {!collapsed && (
+                <span>{item.label}</span>
+              )}
             </button>
           ))}
         </nav>
 
-        {/* Bottom buttons */}
+        {/* BOTONES INFERIORES */}
         <div
           style={{
-            borderTop:
-              '1px solid rgba(255,255,255,0.08)',
             padding: 10,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 10,
+            borderTop:
+              '1px solid rgba(255,255,255,0.1)',
           }}
         >
-          {/* Logout */}
-          <button
-            onClick={() => {
-              localStorage.removeItem('token')
-              localStorage.removeItem('usuario')
-
-              window.location.replace('/')
-            }}
-            style={{
-              background: '#dc2626',
-              color: '#fff',
-              padding: '12px',
-              border: 'none',
-              borderRadius: 10,
-              cursor: 'pointer',
-              fontSize: 13,
-            }}
-          >
-            {collapsed ? '⎋' : 'Cerrar sesión'}
-          </button>
-
-          {/* Collapse */}
+          {/* COLAPSAR */}
           <button
             onClick={() =>
               setCollapsed(!collapsed)
             }
             style={{
-              background: 'transparent',
-              color: 'rgba(255,255,255,0.3)',
-              padding: '10px',
+              width: '100%',
+              padding: 12,
+              marginBottom: 10,
               border: 'none',
+              borderRadius: 10,
+              background: '#374151',
+              color: '#fff',
               cursor: 'pointer',
-              fontSize: 18,
             }}
           >
-            {collapsed ? '›' : '‹'}
+            {collapsed
+              ? '➡ Abrir'
+              : '⬅ Ocultar'}
+          </button>
+
+          {/* CERRAR SESION */}
+          <button
+            onClick={cerrarSesion}
+            style={{
+              width: '100%',
+              padding: 12,
+              border: 'none',
+              borderRadius: 10,
+              background: '#dc2626',
+              color: '#fff',
+              cursor: 'pointer',
+            }}
+          >
+            🚪 {!collapsed && 'Cerrar Sesión'}
           </button>
         </div>
       </aside>
 
-      {/* Main */}
+      {/* CONTENIDO */}
       <main
         style={{
           flex: 1,
-          overflow: 'auto',
+          background: '#f3f4f6',
         }}
       >
-        {/* Topbar */}
+        {/* HEADER */}
         <div
           style={{
-            background: 'var(--gris-0)',
-            borderBottom: '1px solid var(--gris-2)',
-            padding: '14px 28px',
+            background: '#fff',
+            padding: '20px 30px',
+            borderBottom:
+              '1px solid #e5e7eb',
             display: 'flex',
+            justifyContent:
+              'space-between',
             alignItems: 'center',
-            justifyContent: 'space-between',
-            position: 'sticky',
-            top: 0,
-            zIndex: 10,
           }}
         >
           <h2
             style={{
-              fontSize: 18,
-              fontFamily: 'var(--font-display)',
+              margin: 0,
+              fontSize: 24,
             }}
           >
-            {NAV.find((n) => n.id === page)?.icon}{' '}
-            {NAV.find((n) => n.id === page)?.label}
+            {
+              NAV.find(
+                (n) => n.id === page
+              )?.icon
+            }{' '}
+            {
+              NAV.find(
+                (n) => n.id === page
+              )?.label
+            }
           </h2>
 
           <div
             style={{
-              fontSize: 12,
-              color: 'var(--gris-4)',
+              fontSize: 14,
+              color: '#6b7280',
             }}
           >
             {new Date().toLocaleDateString(
@@ -214,8 +218,12 @@ export default function Layout({ page, setPage, children }) {
           </div>
         </div>
 
-        {/* Content */}
-        <div style={{ padding: '28px' }}>
+        {/* PAGINA */}
+        <div
+          style={{
+            padding: 30,
+          }}
+        >
           {children}
         </div>
       </main>

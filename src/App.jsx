@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import Layout from './components/Layout'
-
+import Usuarios from './pages/Usuarios'
 import Dashboard from './pages/Dashboard'
 import Cultivos from './pages/Cultivos'
 import Mediciones from './pages/Mediciones'
@@ -47,6 +47,10 @@ export default function App() {
           <Alertas cultivoId={cultivoId} />
         )
 
+        case 'usuarios':
+          return (
+            <Usuarios />
+          )
       case 'siembra':
         return <Siembra />
 
