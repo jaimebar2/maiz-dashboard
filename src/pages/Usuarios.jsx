@@ -2,11 +2,17 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 
 export default function Usuarios() {
-  const [usuarios, setUsuarios] = useState([])
+  const [usuarios, setUsuarios] =
+    useState([])
 
-  const [nombre, setNombre] = useState('')
-  const [correo, setCorreo] = useState('')
-  const [password, setPassword] = useState('')
+  const [nombre, setNombre] =
+    useState('')
+
+  const [correo, setCorreo] =
+    useState('')
+
+  const [password, setPassword] =
+    useState('')
 
   const cargarUsuarios = async () => {
     try {
@@ -16,7 +22,10 @@ export default function Usuarios() {
 
       setUsuarios(res.data)
     } catch (error) {
-      console.error(error)
+      console.log(error)
+      alert(
+        'Error cargando usuarios'
+      )
     }
   }
 
@@ -24,9 +33,7 @@ export default function Usuarios() {
     cargarUsuarios()
   }, [])
 
-  const crearUsuario = async (e) => {
-    e.preventDefault()
-
+  const crearUsuario = async () => {
     try {
       await axios.post(
         'http://localhost:3000/api/auth/register',
@@ -37,18 +44,19 @@ export default function Usuarios() {
         }
       )
 
-      alert('Usuario creado ✅')
+      alert('Usuario creado')
 
       setNombre('')
       setCorreo('')
       setPassword('')
 
       cargarUsuarios()
-
     } catch (error) {
-      console.error(error)
+      console.log(error)
 
-      alert('Error creando usuario')
+      alert(
+        'Error creando usuario'
+      )
     }
   }
 
@@ -59,9 +67,8 @@ export default function Usuarios() {
       )
 
       cargarUsuarios()
-
     } catch (error) {
-      console.error(error)
+      console.log(error)
     }
   }
 
@@ -69,25 +76,22 @@ export default function Usuarios() {
     <div>
       <h1
         style={{
-          fontSize: 28,
           marginBottom: 20,
         }}
       >
         👤 Usuarios
       </h1>
 
-      {/* FORMULARIO */}
-      <form
-        onSubmit={crearUsuario}
+      {/* FORM */}
+      <div
         style={{
           background: '#fff',
           padding: 20,
-          borderRadius: 20,
-          marginBottom: 30,
+          borderRadius: 12,
+          marginBottom: 20,
         }}
       >
         <input
-          type='text'
           placeholder='Nombre'
           value={nombre}
           onChange={(e) =>
@@ -96,12 +100,11 @@ export default function Usuarios() {
           style={{
             width: '100%',
             padding: 12,
-            marginBottom: 12,
+            marginBottom: 10,
           }}
         />
 
         <input
-          type='email'
           placeholder='Correo'
           value={correo}
           onChange={(e) =>
@@ -110,13 +113,13 @@ export default function Usuarios() {
           style={{
             width: '100%',
             padding: 12,
-            marginBottom: 12,
+            marginBottom: 10,
           }}
         />
 
         <input
+          placeholder='Password'
           type='password'
-          placeholder='Contraseña'
           value={password}
           onChange={(e) =>
             setPassword(e.target.value)
@@ -124,71 +127,68 @@ export default function Usuarios() {
           style={{
             width: '100%',
             padding: 12,
-            marginBottom: 12,
+            marginBottom: 10,
           }}
         />
 
         <button
-          type='submit'
+          onClick={crearUsuario}
           style={{
             padding: 12,
-            background: '#16a34a',
+            background: 'green',
             color: '#fff',
             border: 'none',
-            borderRadius: 12,
+            borderRadius: 8,
           }}
         >
           Crear Usuario
         </button>
-      </form>
+      </div>
 
-      {/* TABLA */}
+      {/* LISTA */}
       <div
         style={{
           background: '#fff',
-          borderRadius: 20,
+          borderRadius: 12,
           padding: 20,
         }}
       >
-        <table
-          style={{
-            width: '100%',
-          }}
-        >
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Correo</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
+        {usuarios.map((u) => (
+          <div
+            key={u.id}
+            style={{
+              display: 'flex',
+              justifyContent:
+                'space-between',
+              alignItems: 'center',
+              padding: 12,
+              borderBottom:
+                '1px solid #ddd',
+            }}
+          >
+            <div>
+              <strong>{u.nombre}</strong>
 
-          <tbody>
-            {usuarios.map((u) => (
-              <tr key={u.id}>
-                <td>{u.nombre}</td>
-                <td>{u.correo}</td>
+              <div>{u.correo}</div>
+            </div>
 
-                <td>
-                  <button
-                    onClick={() =>
-                      eliminarUsuario(u.id)
-                    }
-                    style={{
-                      background: 'red',
-                      color: '#fff',
-                      border: 'none',
-                      padding: 8,
-                      borderRadius: 8,
-                    }}
-                  >
-                    Eliminar
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+            <button
+              onClick={() =>
+                eliminarUsuario(u.id)
+              }
+              style={{
+                background: 'red',
+                color: '#fff',
+                border: 'none',
+                padding:
+                  '8px 12px',
+                borderRadius: 8,
+              }}
+            >
+              Eliminar
+            </button>
+          </div>
+        ))}
       </div>
     </div>
   )
