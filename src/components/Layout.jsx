@@ -1,13 +1,55 @@
 import { useState } from 'react'
 
+const usuario = JSON.parse(
+  localStorage.getItem('usuario')
+)
+
 const NAV = [
-  { id: 'dashboard', label: 'Dashboard', icon: '◈' },
-  { id: 'cultivos', label: 'Cultivos', icon: '🌽' },
-  { id: 'mediciones', label: 'Mediciones', icon: '📊' },
-  { id: 'ia', label: 'Análisis IA', icon: '🤖' },
-  { id: 'alertas', label: 'Alertas', icon: '🚨' },
-  { id: 'siembra', label: 'Siembra', icon: '📅' },
-  { id: 'usuarios', label: 'Usuarios', icon: '👤' },
+  {
+    id: 'dashboard',
+    label: 'Dashboard',
+    icon: '◈',
+  },
+
+  {
+    id: 'cultivos',
+    label: 'Cultivos',
+    icon: '🌽',
+  },
+
+  {
+    id: 'mediciones',
+    label: 'Mediciones',
+    icon: '📊',
+  },
+
+  {
+    id: 'ia',
+    label: 'Análisis IA',
+    icon: '🤖',
+  },
+
+  {
+    id: 'alertas',
+    label: 'Alertas',
+    icon: '🚨',
+  },
+
+  {
+    id: 'siembra',
+    label: 'Siembra',
+    icon: '📅',
+  },
+
+  ...(usuario?.rol === 'admin'
+    ? [
+        {
+          id: 'usuarios',
+          label: 'Usuarios',
+          icon: '👤',
+        },
+      ]
+    : []),
 ]
 
 export default function Layout({
@@ -115,7 +157,7 @@ export default function Layout({
           ))}
         </nav>
 
-        {/* BOTONES INFERIORES */}
+        {/* BOTONES */}
         <div
           style={{
             padding: 10,
@@ -157,7 +199,8 @@ export default function Layout({
               cursor: 'pointer',
             }}
           >
-            🚪 {!collapsed && 'Cerrar Sesión'}
+            🚪 {!collapsed &&
+              'Cerrar Sesión'}
           </button>
         </div>
       </aside>
@@ -206,15 +249,7 @@ export default function Layout({
               color: '#6b7280',
             }}
           >
-            {new Date().toLocaleDateString(
-              'es-CO',
-              {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              }
-            )}
+            👤 {usuario?.nombre}
           </div>
         </div>
 
